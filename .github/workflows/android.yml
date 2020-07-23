@@ -1,0 +1,32 @@
+on:
+  push:
+    tags:
+      - 'releases-android/**'
+
+name: Build release apks for Android platform
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.17.5'
+
+      - name: install dependencies
+        run: flutter pub get
+
+      - name: run flutter tests
+        run: flutter test
+
+      - name: build apks
+        run: flutter build apk --debug --split-per-abi #Change to release mode if needed
+
+      - name: push apks to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/debug/*.apk"
+          token: ${{ secrets.TOKEN }}

@@ -1,0 +1,39 @@
+on:
+  push:
+    tags:
+      - 'releases-ios/**'
+
+name: Build release ipa for iOS platform
+
+jobs:
+  build:
+    name: Build iOS ipa
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.17.5'
+
+      - name: install dependencies
+        run: flutter pub get
+
+      - name: run flutter tests
+        run: flutter test
+
+      - name: build ios project
+        run: flutter build ios --release --no-codesign #Change to release mode if needed
+
+      - name: create new Payload folder to create ipa
+        run: mkdir -p build/ios/iphoneos/Payload
+      - name: move Runner.app to Payload
+        run: mv build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload
+      - name: zip folder and set ipa extension
+        run: zip -r build/ios/iphoneos/Payload.ipa build/ios/iphoneos/Payload
+
+      - name: push ipa to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/ios/iphoneos/Payload.ipa"
+          token: ${{ secrets.TOKEN }}

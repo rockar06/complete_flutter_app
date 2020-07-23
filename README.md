@@ -1,6 +1,6 @@
 # complete_flutter_app
 
-A new Flutter application that includes a module and package
+Flutter project showing how to mix a flutter app, flutter package and flutter module
 
 ## Getting Started
 
