@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - 'release/android/library/**'
+      - 'release/library/android/**'
 
 name: Build android libraries from Flutter Module
 
