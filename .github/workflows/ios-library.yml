@@ -38,5 +38,5 @@ jobs:
       - name: push framework to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/ios/framework.zip"
+          artifacts: "flutter_module/build/ios/framework.zip"
           token: ${{ secrets.TOKEN }}
