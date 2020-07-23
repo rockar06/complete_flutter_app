@@ -1,9 +1,9 @@
 on:
   push:
     tags:
-      - 'release/android/**'
+      - 'release/android/library/**'
 
-name: Build release apks for Android platform
+name: Build android libraries from Flutter Module
 
 jobs:
   build:
@@ -22,11 +22,11 @@ jobs:
       - name: run flutter tests
         run: flutter test
 
-      - name: build apks
-        run: flutter build apk --debug --split-per-abi #Change to release mode if needed
+      - name: build aar files
+        run: flutter build aar
 
       - name: push apks to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/debug/*.apk"
+          artifacts: "build/host/outputs/repo"
           token: ${{ secrets.TOKEN }}

@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - 'releases-ios/**'
+      - 'release/ios/**'
 
 name: Build release ipa for iOS platform
 
