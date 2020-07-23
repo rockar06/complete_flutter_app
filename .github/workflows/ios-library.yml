@@ -1,0 +1,42 @@
+on:
+  push:
+    tags:
+      - 'release/library/ios/**'
+
+name: Build ios libraries from Flutter Module
+
+jobs:
+  build:
+    name: Build iOS podspec
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '1.17.5'
+
+      - name: install dependencies
+        working-directory: ./flutter_module
+        run: flutter pub get
+
+      - name: run flutter tests
+        working-directory: ./flutter_module
+        run: flutter test
+
+      - name: build ios library
+        working-directory: ./flutter_module
+        run: flutter build ios-framework --cocoapods --output=build/ios/framework
+
+      # This is an extra step, is used to zip the framework folder and upload it to releases section
+      # in github
+      - name: zip framework folder
+        working-directory: ./flutter_module
+        run: zip -r build/ios/framework.zip build/ios/framework
+
+      # Here we should update our framework folder to a cocoapods repository server
+      - name: push framework to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/ios/framework.zip"
+          token: ${{ secrets.TOKEN }}
