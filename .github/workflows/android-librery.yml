@@ -23,7 +23,7 @@ jobs:
         run: flutter test
 
       - name: build aar files
-        run: flutter build aar
+        run: flutter build aar --build-number=0.0.1 #This number should be generated dynamically
 
       - name: push apks to Releases
         uses: ncipollo/release-action@v1
