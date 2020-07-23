@@ -17,15 +17,19 @@ jobs:
           flutter-version: '1.17.5'
 
       - name: install dependencies
+        working-direcory: ./flutter_module
         run: flutter pub get
 
       - name: run flutter tests
+        working-direcory: ./flutter_module
         run: flutter test
 
       - name: build aar files
+        working-direcory: ./flutter_module
         run: flutter build aar --build-number=0.0.1 #This number should be generated dynamically
 
       - name: push apks to Releases
+        working-direcory: ./flutter_module
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/host/outputs/repo"
