@@ -28,8 +28,15 @@ jobs:
         working-directory: ./flutter_module
         run: flutter build aar --build-number=0.0.1 #This number should be generated dynamically
 
-      - name: push apks to Releases
+      # This is an extra step, is used to zip the repo folder and upload it to releases section in
+      # github
+      - name: zip repo folder
+        working-directory: ./flutter_module
+        run: zip -r build/host/outputs/repo.zip build/host/outputs/repo
+
+      # Here we should update our repo folder to a repository server
+      - name: push repo folder to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "flutter_module/build/host/outputs/repo"
+          artifacts: "flutter_module/build/host/outputs/repo.zip"
           token: ${{ secrets.TOKEN }}
