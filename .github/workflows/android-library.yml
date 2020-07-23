@@ -29,8 +29,7 @@ jobs:
         run: flutter build aar --build-number=0.0.1 #This number should be generated dynamically
 
       - name: push apks to Releases
-        working-directory: ./flutter_module
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/host/outputs/repo"
+          artifacts: "flutter_module/build/host/outputs/repo"
           token: ${{ secrets.TOKEN }}
